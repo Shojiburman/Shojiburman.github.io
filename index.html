@@ -123,18 +123,59 @@ img[data-zoom]:focus-visible{outline:3px solid #8a4f0f;outline-offset:3px}
 footer{padding:48px 0;color:#55524d;font-size:15px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
-@media (max-width:860px){
-.cards{grid-template-columns:1fr}
+.menu-btn{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:#1c1c1e;cursor:pointer}
+.menu-btn:hover{background:#f3f1ed}
+
+/* tablet */
+@media (max-width:960px){
+.cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cards .card:last-child:nth-child(odd){grid-column:1/-1}
 .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
-.two{grid-template-columns:1fr;gap:40px}
+.grid4 img{height:200px}
+.intro .wrap{flex-wrap:nowrap;gap:32px}
+.intro-text{flex:1 1 auto}
+.intro-side{flex:0 0 240px}
+.intro-side .btn{width:100%}
+.intro-side .avatar{width:180px;height:180px}
 }
-@media (max-width:600px){
-.intro h1{font-size:36px}
-h2{font-size:28px}
-.feature{height:380px}
-.feature h3{font-size:26px}
-.feature .band{padding:20px}
-.pubs li{flex-direction:column;gap:4px}
+
+/* phone */
+@media (max-width:700px){
+nav .wrap{flex-wrap:nowrap;min-height:60px}
+.menu-btn{display:inline-flex}
+nav ul{display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;gap:0;background:#fff;border-bottom:1px solid #ece9e3;padding:8px 16px 16px;box-shadow:0 8px 16px rgba(0,0,0,.06)}
+nav.open ul{display:flex}
+nav ul a{width:100%;min-height:48px;font-size:17px}
+
+.intro{padding:40px 0 48px}
+.intro .wrap{flex-direction:column;gap:28px}
+.intro-side{order:-1;flex:none;width:100%;align-items:center;text-align:center}
+.intro-side .avatar{width:160px;height:160px}
+.intro-side .btn{width:100%;max-width:340px}
+.intro-side .links{justify-content:center}
+.intro-text{flex:none;width:100%}
+.intro h1{font-size:36px;text-align:center}
+.role{text-align:center;font-size:17px}
+
+section.block{padding:52px 0}
+h2{font-size:28px;margin-bottom:24px}
+
+.feature{height:auto;background:#1c1c1e}
+.feature img{height:240px;opacity:1}
+.feature .band{position:static;padding:20px;background:#1c1c1e}
+.feature h3{font-size:24px}
+.feature p{font-size:16px}
+.grid4 img{height:140px}
+
+.cards{grid-template-columns:1fr}
+.two{grid-template-columns:1fr;gap:40px}
+.labphoto{max-width:none}
+
+.pubs{gap:24px}
+.pubs li{flex-direction:column;gap:2px}
+.year{flex:none;font-size:14px;padding:0}
+
+footer .wrap{flex-direction:column}
 }
 </style>
 </head>
@@ -143,7 +184,10 @@ h2{font-size:28px}
 <nav aria-label="Main">
 <div class="wrap">
 <a class="brand" href="#top">Shojibur Rahman</a>
-<ul>
+<button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
+</button>
+<ul id="navlinks">
 <li><a href="#research">Research</a></li>
 <li><a href="#publications">Publications</a></li>
 <li><a href="#experience">Experience</a></li>
@@ -199,7 +243,7 @@ h2{font-size:28px}
 
 <div class="grid4">
 <figure><img data-zoom src="images/litvr-aerial-city.jpg" alt="Aerial view of the city blocks, gate and wall" loading="lazy"><figcaption>The city from above</figcaption></figure>
-<figure><img data-zoom src="images/litvr-city-gate.jpg" alt="City gate with a statue, guards and a covered wagon" loading="lazy"><figcaption>The Ludgate and NPCs</figcaption></figure>
+<figure><img data-zoom src="images/litvr-city-gate.jpg" alt="City gate with a statue, guards and a covered wagon" loading="lazy"><figcaption>The city gate and characters</figcaption></figure>
 <figure><img data-zoom src="images/litvr-street.jpg" alt="Timber-framed houses along a cobblestone street" loading="lazy"><figcaption>Timber-framed streets</figcaption></figure>
 <figure><img data-zoom src="images/litvr-city-wall.jpg" alt="Street running beside the stone city wall" loading="lazy"><figcaption>Along the city wall</figcaption></figure>
 </div>
@@ -368,6 +412,22 @@ h2{font-size:28px}
 </div>
 
 <script>
+(function(){
+  var nav = document.querySelector('nav');
+  var btn = nav.querySelector('.menu-btn');
+  btn.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  nav.querySelectorAll('ul a').forEach(function(a){
+    a.addEventListener('click', function(){
+      nav.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open menu');
+    });
+  });
+})();
 (function(){
   var imgs = Array.prototype.slice.call(document.querySelectorAll('img[data-zoom]'));
   var box = document.getElementById('lightbox');
